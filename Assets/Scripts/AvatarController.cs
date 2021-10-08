@@ -9,10 +9,13 @@ public class AvatarController : MonoBehaviour
     public PlayerInput input;
     public HumanoidAnimations avatarAnimations;
 
+    public InventorySystem inventorySystem;
+
     BaseState currentState;
     public readonly BaseState movementState = new MovementState();
     public readonly BaseState jumpState = new JumpState();
     public readonly BaseState fallingState = new FallingState();
+    public readonly BaseState inventoryState = new InventoryState();
     
     
     private void OnEnable(){
@@ -21,15 +24,25 @@ public class AvatarController : MonoBehaviour
         avatarAnimations = GetComponent<HumanoidAnimations>();
         currentState = movementState;
         currentState.EnterState(this);
-        AssignMovementInputListeners();
+        AssignInputListeners();
     }
 
-    private void AssignMovementInputListeners(){
+    private void AssignInputListeners(){
         input.OnJump += HandleJump;
+        input.OnHotbarKey += HandleHotbarInput;
+        input.OnToggleInventory += HandleInventoryInput;
     }
 
     private void HandleJump(){
         currentState.HandleJumpInput();
+    }
+
+    private void HandleInventoryInput(){
+        currentState.HandleInventoryInput();
+    }
+
+    private void HandleHotbarInput(int hotbarKey){
+        currentState.HandleHotbarInput(hotbarKey);
     }
 
     private void OnDisable(){

@@ -26,6 +26,11 @@ public class MovementState : BaseState
         controllerRef.TransitionToState(controllerRef.jumpState);
     }
 
+    public override void HandleInventoryInput(){
+        base.HandleInventoryInput();
+        controllerRef.TransitionToState(controllerRef.inventoryState);
+    }
+
     public override void Update(){
         base.Update();
         HandleMovement(controllerRef.input.MovementInputVector);
